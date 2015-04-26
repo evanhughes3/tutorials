@@ -12,6 +12,10 @@ function duplicate (numsArray) {
   return newArray;
 }
 
+function duplicate (numsArray) {
+  var newArray = numsArray
+  return newArray.concat(numsArray);
+}
 
 
 console.log(duplicate([1,2,3,4,5]) === [1,2,3,4,5,1,2,3,4,5])
