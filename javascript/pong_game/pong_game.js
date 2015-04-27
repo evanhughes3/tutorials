@@ -30,7 +30,10 @@ ai = {
   width: 20,
   height: 100,
 
-  update: function() {},
+  update: function() {
+    var destination = ball.y - (this.height - ball.side)*0.5;
+    this.y = destination
+  },
   draw: function() {
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
@@ -59,7 +62,11 @@ ball = {
 
     var paddle = this.vel.x < 0 ? player : ai;
     if (AABBIntersect(paddle.x, paddle.y, paddle.width, paddle.height, this.x, this.y, this.side, this.side)) {
-      this.vel.x *= -1;
+      this.x = paddle===player ? player.x+player.width : ai.x - this.side;
+      var n = (this.y+this.side - paddle.y)/(paddle.height+this.side);
+      var phi = 0.25*pi*(2*n - 1); //pi/4 = 45degree angle
+      this.vel.x = (paddle===player ? 1 : -1 ) * this.speed*Math.cos(phi);
+      this.vel.y = this.speed*Math.sin(phi);
     }
   },
   draw: function() {
