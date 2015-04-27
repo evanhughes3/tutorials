@@ -2,6 +2,8 @@
 
 // Game board
 var WIDTH=700, HEIGHT=600, pi=Math.PI;
+// Controls
+var UpArrow=38, DownArrow=40;
 // Gamestate
 var canvas, ctx, keystate;
 // Logic
@@ -13,7 +15,10 @@ player = {
   width: 20,
   height: 100,
 
-  update: function() {},
+  update: function() {
+    if (keystate[UpArrow]) this.y -= 7;
+    if (keystate[DownArrow]) this.y += 7;
+  },
   draw: function() {
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
@@ -34,9 +39,29 @@ ai = {
 ball = {
   x: null,
   y: null,
+  vel: null,
   side: 20,
+  speed: 5,
 
-  update: function() {},
+  update: function() {
+    this.x += this.vel.x;
+    this.y += this.vel.y;
+
+    if (this.y < 0 || this.y + this.side > HEIGHT) {
+      var offset = this.vel.y < 0 ? 0 - this.y : HEIGHT - (this.y + this.side)
+      this.y += 2*offset;
+      this.vel.y *= -1;
+    }
+
+    var AABBIntersect = function(ax, ay, aw, ah, bx, by, bw, bh) {
+      return ax < bx+bw && ay < by+bh && bx < ax+aw && by < ay+ah;
+    };
+
+    var paddle = this.vel.x < 0 ? player : ai;
+    if (AABBIntersect(paddle.x, paddle.y, paddle.width, paddle.height, this.x, this.y, this.side, this.side)) {
+      this.vel.x *= -1;
+    }
+  },
   draw: function() {
     ctx.fillRect(this.x, this.y, this.side, this.side);
   }
@@ -49,6 +74,16 @@ function main () {
   canvas.height = HEIGHT;
   ctx = canvas.getContext("2d");
   document.body.appendChild(canvas);
+
+  keystate = {};
+
+  document.addEventListener("keydown", function(event){
+    keystate[event.keyCode] = true;
+  });
+
+  document.addEventListener("keyup", function(event){
+    delete keystate[event.keyCode];
+  });
 
   init();
 
@@ -70,6 +105,11 @@ function init() {
 
   ball.x = (WIDTH - ball.side)/2;
   ball.y = (HEIGHT - ball.side)/2;
+
+  ball.vel = {
+    x: ball.speed,
+    y: 0,
+  }
 }
 
 function update() {
