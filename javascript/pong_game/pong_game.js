@@ -32,7 +32,7 @@ ai = {
 
   update: function() {
     var destination = ball.y - (this.height - ball.side)*0.5;
-    this.y = destination
+    this.y += (destination - this.y) * 0.1;
   },
   draw: function() {
     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -44,7 +44,7 @@ ball = {
   y: null,
   vel: null,
   side: 20,
-  speed: 5,
+  speed: 12,
 
   update: function() {
     this.x += this.vel.x;
@@ -65,8 +65,10 @@ ball = {
       this.x = paddle===player ? player.x+player.width : ai.x - this.side;
       var n = (this.y+this.side - paddle.y)/(paddle.height+this.side);
       var phi = 0.25*pi*(2*n - 1); //pi/4 = 45degree angle
-      this.vel.x = (paddle===player ? 1 : -1 ) * this.speed*Math.cos(phi);
-      this.vel.y = this.speed*Math.sin(phi);
+
+      var smash = Math.abs(phi) > 0.2*pi ? 1.5 : 1;
+      this.vel.x = smash * (paddle===player ? 1 : -1 ) * this.speed*Math.cos(phi);
+      this.vel.y = smash * this.speed*Math.sin(phi);
     }
   },
   draw: function() {
