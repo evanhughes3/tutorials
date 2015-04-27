@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pong</title>
-</head>
-<body>
-<script>
-  "use strict;"
+"use strict;"
 
   // Game board
   var WIDTH=700, HEIGHT=600, pi=Math.PI;
@@ -80,16 +72,16 @@
     ball.y = (HEIGHT - ball.side)/2;
   }
 
-  function update() {}
+  function update() {
+    ball.update();
+    player.update();
+    ai.update();
+  }
 
-  function draw() {}
+  function draw() {
+    ball.draw();
+    player.draw();
+    ai.draw();
+  }
 
   main();
-
-
-
-
-</script>
-
-</body>
-</html>
