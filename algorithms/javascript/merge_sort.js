@@ -29,12 +29,8 @@ function mergeSort(items) {
   var mid = Math.floor(items.length/2);
   var left = items.slice(0,mid);
   var right = items.slice(mid);
-  // left = [1,9]
-  // right = [6,4]
 
   return merge(mergeSort(left), mergeSort(right));
-  // merge(mergeSort([1,9], mergeSort[6,4]))
-  // merge( mergeSort([1],[9]), mergeSort([6], [4]) )
 
 }
 
