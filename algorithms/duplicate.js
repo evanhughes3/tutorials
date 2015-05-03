@@ -18,4 +18,22 @@ function duplicate (numsArray) {
 }
 
 
-console.log(duplicate([1,2,3,4,5]) === [1,2,3,4,5,1,2,3,4,5])
+
+// test
+
+function checkDuplicate(test, correct) {
+  if (test.length !== correct.length) {
+    return false
+  }
+
+  for (var i = 0; i < test.length; i++) {
+    if (test[i] != correct[i]){
+      return false;
+    }
+  };
+  return true;
+}
+
+var test = duplicate([1,2,3,4,5]);
+var correct = [1,2,3,4,5,1,2,3,4,5];
+console.log(checkDuplicate(test, correct));
