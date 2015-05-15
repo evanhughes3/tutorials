@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Backbone Example</title>
+</head>
+<body>
+  <button id="add-friend">Add Friend</button>
+
+  <ul id="friend-list"></ul>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+<script>
+$(document).ready(function() {
+
+  Friend = Backbone.Model.extend({
+    name: null
+  });
+
+  Friends = Backbone.Collection.extend({
+    initialize: function(models, options) {
+      this.bind("add", options.view.addFriendLi);
+    }
+  });
+
+  AppView = Backbone.View.extend({
+    el: $("body"),
+    initialize: function(){
+      this.friends = new Friends(null, { view: this });
+    },
+    events: {
+      "click #add-friend": "showPrompt",
+    },
+    showPrompt: function(){
+      var friendName = prompt("What is your friends name?");
+      var friendModel = new Friend({ name: friendName });
+      this.friends.add( friendModel );
+    },
+    addFriendLi: function(model){
+      $('#friend-list').append("<li>" + model.get("name") + "</li>");
+    }
+  });
+
+  var appview = new AppView;
+
+});
+
+</script>
+</body>
+</html>
