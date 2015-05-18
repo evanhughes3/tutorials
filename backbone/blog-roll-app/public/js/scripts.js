@@ -1,3 +1,5 @@
+
+
 // Backbone model
 
 var Blog = Backbone.Model.extend({
@@ -11,7 +13,7 @@ var Blog = Backbone.Model.extend({
 // Backbone collection
 
 var Blogs = Backbone.Collection.extend({
-
+  url: 'http://localhost:3000/api/blogs'
 });
 
 // Instantiate 2 blogs
@@ -89,6 +91,17 @@ var BlogsView = Backbone.View.extend({
     this.model.on('add', this.render, this);
     this.model.on('change', this.render, this);
     this.model.on('remove', this.render, this);
+
+    this.model.fetch({
+      success: function(response) {
+        _.each(response.toJSON(), function(item) {
+          console.log('Successfully got blog with _id: ' + item._id);
+        })
+      },
+      error: function() {
+        console.log("failed to get blogs");
+      }
+    });
   },
   render: function() {
     var self = this;
@@ -115,6 +128,15 @@ $(document).ready(function() {
     title: $('.title-input').val('');
     url: $('.url-input').val('');
     blogs.add(blog);
+
+    blog.save(null, {
+      success: function(response) {
+        console.log("Successfully saved blog with _id" + response.toJSON()._id);
+      },
+      error: function() {
+        console.log("failed to save blog")
+      }
+    });
   });
 
 });
