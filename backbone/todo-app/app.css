@@ -9,3 +9,7 @@
 #todo-list .editing input.edit {
   display: inline; /* Shows input text box when .editing*/
 }
+
+#todo-list .destroy {
+  display: none;
+}

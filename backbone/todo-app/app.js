@@ -12,7 +12,15 @@ app.Todo = Backbone.Model.extend({
 
 app.TodoList = Backbone.Collection.extend({
   model: app.Todo,
-  localStorage: new Store('backbone-todo')
+  localStorage: new Store('backbone-todo'),
+  completed: function() {
+    return this.filter(function(todo) {
+      return todo.get('completed');
+    });
+  },
+  remaining: function() {
+    return this.without.apply(this, this.completed() );
+  }
 });
 
 app.todolist = new app.TodoList();
@@ -32,12 +40,13 @@ app.TodoView = Backbone.View.extend({
   events: {
     'dblclick label' : 'edit',
     'keypress .edit' : 'updateOnEnter',
-    'blur .edit' : 'close',
+    // 'blur .edit' : 'close',
     'click .toggle' : 'toggleCompleted',
     'click .destroy' : 'destroy'
   },
   edit: function() {
     this.$el.addClass('editing');
+    this.$('.destroy').show();
     this.input.focus();
   },
   close: function(){
@@ -46,6 +55,7 @@ app.TodoView = Backbone.View.extend({
       this.model.save({ title: value });
     }
     this.$el.removeClass('editing');
+    this.$('.destroy').hide();
   },
   updateOnEnter: function(event){
     if (event.which === 13) {
@@ -86,7 +96,18 @@ app.AppView = Backbone.View.extend({
   },
   addAll: function() {
     this.$('#todo-list').html('');
-    app.todolist.each(this.addOne, this);
+    // filter todo item list
+    switch (window.filter) {
+      case 'pending':
+        _.each(app.todolist.remaining(), this.addOne);
+        break;
+      case 'completed':
+        _.each(app.todolist.completed(), this.addOne);
+        break;
+      default:
+        app.todolist.each(this.addOne, this);
+        break;
+    }
   },
   newAttributes: function(){
     return {
@@ -96,4 +117,19 @@ app.AppView = Backbone.View.extend({
   }
 });
 
+
+app.Router = Backbone.Router.extend({
+  routes: {
+  '*filter' : 'setFilter'
+ },
+ setFilter: function(params) {
+  console.log('app.router.params = ' + params);
+  window.filter = params.trim() || '';
+  app.todolist.trigger('reset');
+ }
+});
+
+
+app.router = new app.Router();
+Backbone.history.start();
 app.appview = new app.AppView();
