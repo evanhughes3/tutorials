@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="app.css">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Hello World in Backbone.js</title>
@@ -19,10 +20,12 @@
     </section>
   </section>
 
+
   <script type="text/template" id="item-template">
      <div class="view">
        <input class="toggle" type="checkbox">
-       <label><%- title %></label>
+       <label><%= title %></label>
+       <input class="edit" value="<%= title %>">
      </div>
    </script>
 
