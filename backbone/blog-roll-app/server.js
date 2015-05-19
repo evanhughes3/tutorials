@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 mongoose.connect('mongodb://localhost/blogroll');
 
@@ -35,10 +35,10 @@ app.get('/api/blogs', function(request, response) {
   Blog.find(function(err, docs) {
     docs.forEach(function(item) {
       console.log("received a get request for _id" + item._id);
-    })
+    });
     response.send(docs);
-  })
-})
+  });
+});
 
 app.post('/api/blogs', function(request, response) {
   console.log("received a post request");
@@ -55,8 +55,8 @@ app.delete('/api/blogs/:id', function(req, res) {
   console.log("Received a DELETE request for _id: " + req.params.id);
   Blog.remove({_id: req.params.id}, function(err) {
     res.send({_id: req.params.id});
-  })
-})
+  });
+});
 
 app.put('/api/blogs/:id', function(req, res) {
   console.log("Received an UPDATE request for _id: " + req.params.id);
@@ -68,4 +68,4 @@ app.put('/api/blogs/:id', function(req, res) {
 var port = 3000;
 
 app.listen(port);
-console.log("server on port " + port)
+console.log("server on port " + port);

@@ -77,11 +77,11 @@ var BlogView = Backbone.View.extend({
       error: function() {
         console.log("Failed to update blog");
       }
-    })
+    });
 
   },
   cancel: function() {
-    blogsView.render()
+    blogsView.render();
   },
   delete: function() {
     this.model.destroy({
@@ -114,7 +114,7 @@ var BlogsView = Backbone.View.extend({
       success: function(response) {
         _.each(response.toJSON(), function(item) {
           console.log('Successfully got blog with _id: ' + item._id);
-        })
+        });
       },
       error: function() {
         console.log("failed to get blogs");
@@ -142,9 +142,9 @@ $(document).ready(function() {
       url: $('.url-input').val()
 
     });
-    author: $('.author-input').val('');
-    title: $('.title-input').val('');
-    url: $('.url-input').val('');
+    $('.author-input').val('');
+    $('.title-input').val('');
+    $('.url-input').val('');
     blogs.add(blog);
 
     blog.save(null, {
@@ -152,7 +152,7 @@ $(document).ready(function() {
         console.log("Successfully saved blog with _id" + response.toJSON()._id);
       },
       error: function() {
-        console.log("failed to save blog")
+        console.log("failed to save blog");
       }
     });
   });
