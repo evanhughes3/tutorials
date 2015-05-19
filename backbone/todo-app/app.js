@@ -4,6 +4,9 @@ app.Todo = Backbone.Model.extend({
   defaults: {
     title: '',
     completed: false
+  },
+  toggle: function() {
+    this.save({ completed: !this.get('completed')});
   }
 });
 
@@ -24,11 +27,14 @@ app.TodoView = Backbone.View.extend({
   },
   initialize: function(){
     this.model.on('change', this.render, this);
+    this.model.on('remove', this.remove, this);
   },
   events: {
     'dblclick label' : 'edit',
     'keypress .edit' : 'updateOnEnter',
-    'blur .edit' : 'close'
+    'blur .edit' : 'close',
+    'click .toggle' : 'toggleCompleted',
+    'click .destroy' : 'destroy'
   },
   edit: function() {
     this.$el.addClass('editing');
@@ -45,8 +51,13 @@ app.TodoView = Backbone.View.extend({
     if (event.which === 13) {
       this.close();
     }
+  },
+  toggleCompleted: function() {
+    this.model.toggle();
+  },
+  destroy: function(){
+    this.model.destroy();
   }
-
 });
 
 // var view = new app.TodoView({model: todo});

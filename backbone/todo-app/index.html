@@ -23,9 +23,10 @@
 
   <script type="text/template" id="item-template">
      <div class="view">
-       <input class="toggle" type="checkbox">
+       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
        <label><%= title %></label>
        <input class="edit" value="<%= title %>">
+       <button class="destroy">Delete</button>
      </div>
    </script>
 
