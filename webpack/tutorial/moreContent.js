@@ -1,0 +1,1 @@
+module.exports =  "It also works in development mode"
