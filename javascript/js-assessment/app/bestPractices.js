@@ -15,10 +15,11 @@ define(function() {
     },
 
     functions : function(flag) {
+      var getValue;
       if (flag) {
-        var getValue = function() { return 'a'; }
+        getValue = function() { return 'a'; };
       } else {
-        var getValue = function() { return 'b'; }
+        getValue = function() { return 'b'; };
       }
 
       return getValue();
